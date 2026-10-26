@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Information</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f7f3;
+            margin: 0;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 25px auto;
+            padding: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px #ccc;
+        }
+
+        a {
+            color: #176b45;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Healthcare Information</h1>
+    <p>District-wise healthcare service details</p>
+</header>
+
+<main>
+    {% for service in services %}
+    <section class="card">
+        <h2>{{ service['district'] }}</h2>
+        <h3>{{ service['title'] }}</h3>
+        <p>{{ service['description'] }}</p>
+        <p><strong>Contact:</strong> {{ service['contact'] }}</p>
+    </section>
+    {% else %}
+    <p>No healthcare information available.</p>
+    {% endfor %}
+
+    <p><a href="/">Back to Home</a></p>
+</main>
+
+</body>
+</html>

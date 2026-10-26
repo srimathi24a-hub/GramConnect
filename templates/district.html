@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ district['name'] }} District | GramConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #244b38;
+            --green-dark: #183a29;
+            --green-light: #e4ecdf;
+            --cream: #f5f3eb;
+            --white: #fffefa;
+            --text: #29372c;
+            --muted: #72776e;
+            --border: #e6e2d6;
+            --brown: #98612d;
+            --orange-light: #f5e8d5;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Navigation */
+
+        .navbar {
+            background: var(--white);
+            padding: 17px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--green);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #16a34a;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--green);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 650;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--brown);
+        }
+
+        /* Main layout */
+
+        .container {
+            width: 90%;
+            max-width: 1120px;
+            margin: 32px auto;
+            min-height: 65vh;
+        }
+
+        /* District banner */
+
+        .district-banner {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(125deg, #244b38, #35684a);
+            color: var(--white);
+            padding: 42px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(36, 75, 56, 0.12);
+            animation: fadeUp 0.55s ease both;
+        }
+
+        .district-banner::after {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            right: -65px;
+            top: -80px;
+            border: 35px solid rgba(255, 255, 255, 0.07);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .eyebrow {
+            color: #e0d2a6;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 750;
+            margin-bottom: 12px;
+        }
+
+        .district-banner h1 {
+            font-size: clamp(29px, 4vw, 43px);
+            font-weight: 750;
+            line-height: 1.2;
+            margin-bottom: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .district-banner p {
+            color: #e0e9df;
+            font-size: 15px;
+            max-width: 650px;
+        }
+
+        .banner-buttons {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: var(--white);
+            color: var(--green);
+            padding: 11px 17px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 750;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: var(--green-light);
+            transform: translateY(-2px);
+        }
+
+        /* Service section */
+
+        .section {
+            margin-top: 38px;
+        }
+
+        .section-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .section h2 {
+            color: var(--green);
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .service-count {
+            display: inline-block;
+            padding: 7px 12px;
+            background: var(--green-light);
+            color: var(--green);
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        /* Service cards */
+
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--green);
+            border-radius: 13px;
+            padding: 25px;
+            min-width: 0;
+            box-shadow: 0 5px 16px rgba(41, 55, 44, 0.04);
+            animation: fadeUp 0.55s ease both;
+            transition: transform 0.25s ease,
+                        box-shadow 0.25s ease,
+                        border-color 0.25s ease;
+        }
+
+        .service-card:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+
+        .service-card:nth-child(3) {
+            animation-delay: 0.16s;
+        }
+
+        .service-card:nth-child(4) {
+            animation-delay: 0.24s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #b9c8b3;
+            box-shadow: 0 12px 27px rgba(41, 55, 44, 0.09);
+        }
+
+        .service-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .service-icon {
+            width: 49px;
+            height: 49px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--green-light);
+            font-size: 23px;
+        }
+
+        .service-card h3 {
+            color: var(--green);
+            font-size: 19px;
+            line-height: 1.4;
+            padding-top: 3px;
+            overflow-wrap: anywhere;
+        }
+
+        .category {
+            display: inline-block;
+            margin-top: 7px;
+            background: #e9eee5;
+            color: var(--green);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .description {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        /* Contact information */
+
+        .contact {
+            padding-top: 17px;
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-title {
+            font-size: 13px;
+            font-weight: 750;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        .contact-details {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-details a {
+            color: var(--green);
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+
+        /* Action buttons */
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 12px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 14px;
+            background: var(--green);
+            color: white !important;
+            border: 1px solid var(--green);
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.5;
+            transition: background 0.2s ease,
+                        transform 0.2s ease;
+        }
+
+        .button:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+        }
+
+        .button.secondary {
+            background: transparent;
+            color: var(--green) !important;
+        }
+
+        .button.secondary:hover {
+            background: var(--green-light);
+        }
+
+        .button:focus-visible,
+        .back-button:focus-visible,
+        .nav-links a:focus-visible {
+            outline: 3px solid #c28a42;
+            outline-offset: 3px;
+        }
+
+        /* Empty state */
+
+        .empty-state {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 34px;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .empty-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--orange-light);
+            border-radius: 12px;
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            color: var(--green);
+            margin-bottom: 9px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* Footer */
+
+        footer {
+            margin-top: 55px;
+            padding: 25px 15px;
+            background: #eae8de;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        footer p + p {
+            margin-top: 5px;
+        }
+
+        /* Animation */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+
+        @media (max-width: 760px) {
+            .service-list {
+                grid-template-columns: 1fr;
+            }
+
+            .district-banner {
+                padding: 30px 24px;
+            }
+
+            .section h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                gap: 14px;
+            }
+
+            .container {
+                width: 92%;
+                margin-top: 22px;
+            }
+
+            .district-banner {
+                padding: 25px 20px;
+            }
+
+            .service-card {
+                padding: 19px;
+            }
+
+            .empty-state {
+                padding: 23px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="logo">
+            Gram<span>Connect</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('healthcare') }}">Healthcare</a>
+            <a href="{{ url_for('emergency') }}">Emergency</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <section class="district-banner">
+            <div class="eyebrow">Tamil Nadu · District Services</div>
+
+            <h1>{{ district['name'] }} District</h1>
+
+            <p>
+                Find rural service information and contact details for
+                {{ district['name'] }} district. Explore the available
+                healthcare, education, agriculture and emergency services.
+            </p>
+
+            <div class="banner-buttons">
+                <a href="{{ url_for('home') }}" class="back-button">
+                    &larr; Back to Districts
+                </a>
+            </div>
+        </section>
+
+        <section class="section">
+
+            <div class="section-top">
+                <div>
+                    <h2>Available Services</h2>
+                    <p class="section-description">
+                        Browse the service information available for this district.
+                    </p>
+                </div>
+
+                {% if services %}
+                <span class="service-count">
+                    {{ services|length }} service record(s)
+                </span>
+                {% endif %}
+            </div>
+
+            {% if services %}
+
+            <div class="service-list">
+
+                {% for service in services %}
+
+                <article class="service-card">
+
+                    <div class="service-heading">
+                        <div class="service-icon">
+                            {% if service['category'] == 'Healthcare' %}
+                                🏥
+                            {% elif service['category'] == 'Education' %}
+                                🎓
+                            {% elif service['category'] == 'Agriculture' %}
+                                🌱
+                            {% elif service['category'] == 'Emergency' %}
+                                🚨
+                            {% else %}
+                                🏛️
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <h3>{{ service['title'] }}</h3>
+                            <span class="category">
+                                {{ service['category'] }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <p class="description">
+                        {{ service['description'] }}
+                    </p>
+
+                    <div class="contact">
+                        <div class="contact-title">Contact Information</div>
+
+                        <p class="contact-details">
+                            {% if service['contact'] %}
+                                {{ service['contact'] }}
+                            {% else %}
+                                Contact information not provided.
+                            {% endif %}
+                        </p>
+
+                        <div class="actions">
+
+                            {% if service['category'] == 'Healthcare' %}
+
+                                <a class="button" href="tel:104">
+                                    Call Health Helpline 104
+                                </a>
+
+                                <a class="button secondary" href="tel:108">
+                                    Call Ambulance 108
+                                </a>
+
+                            {% elif service['category'] == 'Agriculture' %}
+
+                                <a class="button" href="tel:04428583323">
+                                    Call Agriculture Department
+                                </a>
+
+                                <a class="button secondary"
+                                   href="https://tnagriculture.in/Agritech_new/home/contact/en"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    Agriculture Website ↗
+                                </a>
+
+                            {% elif service['category'] == 'Emergency' %}
+
+                                <a class="button" href="tel:112">
+                                    Emergency 112
+                                </a>
+
+                                <a class="button secondary" href="tel:108">
+                                    Ambulance 108
+                                </a>
+
+                                <a class="button secondary" href="tel:104">
+                                    Health Helpline 104
+                                </a>
+
+                            {% elif service['category'] == 'Education' %}
+
+                                <a class="button secondary"
+                                   href="https://www.tn.gov.in/"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    Tamil Nadu Government ↗
+                                </a>
+
+                            {% elif service['category'] == 'Government Office' %}
+
+                                <a class="button secondary"
+                                   href="https://www.tn.gov.in/"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    Government Website ↗
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+
+                <h3>No service information available yet</h3>
+
+                <p>
+                    No service records have been added for
+                    {{ district['name'] }} district. Add the required
+                    records to the database to display them on this page.
+                </p>
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>GramConnect · Rural Services Information Platform</p>
+        <p>Verify contact numbers and service details through official sources.</p>
+    </footer>
+
+</body>
+</html>
